@@ -37,7 +37,17 @@ public class XxlJobConfig {
     @Value("${xxl.job.executor.logretentiondays}")
     private int logRetentionDays;
 
-
+    /**
+     * 注册 jobService到xxl-job-admin
+     *
+     * 1.以XxlJobSpringExecutor继承xxlJobExecutor
+     * 2.然后注解@Bean  initMethod=start方法启动
+     * 3.start()的initJobHandlerRepository()获取所有@JobHandler的类,
+     * 4.调用registJobHandler()进行注册
+     * 5.执行xxlJobExecutor的start()
+     *
+     * @return
+     */
     @Bean(initMethod = "start", destroyMethod = "destroy")
     public XxlJobSpringExecutor xxlJobExecutor() {
         logger.info(">>>>>>>>>>> xxl-job config init.");
